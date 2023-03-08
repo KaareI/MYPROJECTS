@@ -1,0 +1,3 @@
+Mängu kirjeldus:
+
+Mängija saab valida kasti, millega tahab panustada ning saab seejärel valida erinevate võitude vahel, millel on erinevad kordajad ja võimalused. Kui kasti väärtus on teada, lisatakse kastide väärtused mängija skoorile. Mäng lõppeb, kui kõik mängijad on endale sobiva arvu kastidega panustanud ja soovivad näha skoori.
