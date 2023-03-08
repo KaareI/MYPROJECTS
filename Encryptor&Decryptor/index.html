@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <script src="https://kit.fontawesome.com/4b19ed377c.js" crossorigin="anonymous"></script>
+    <title>Encryptor & Decryptor v1</title>
+</head>
+
+<body>
+    <div class="card">
+        <div class="card-front">
+            <div class="card-heading"><strong>Encryptor</strong></div>
+            <input type="text" class="input-field" placeholder="Text">
+            <button class="submit-button">Encrypt</button>
+            <i><div id="encryptedText"></div></i>
+        </div>
+        <div class="card-back">
+            <div class="card-heading"><strong>Decryptor</strong></div>
+            <input type="text" id="enteredText" class="input-field" placeholder="Text">
+            <input type="number" id="code" class="input-field" placeholder="Code">
+            <button class="submit-button">Decrypt</button>
+            <div id="decryptedText"></div>
+        </div>
+        <div class="arrow"><i class="fa-solid fa-arrow-right-long fa-2x"></i></div>
+    </div>
+</body>
+<script src="script.js"></script>
+
+</html>

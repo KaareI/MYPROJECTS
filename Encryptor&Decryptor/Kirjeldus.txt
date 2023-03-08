@@ -1,0 +1,11 @@
+Antud kood on JavaScriptis kirjutatud krüpteerimis- ja dekrüpteerimisprogramm, mis võimaldab kasutajal sisestada teksti, krüpteerida seda teatud nihke abil ja seejärel dekrüpteerida, kasutades sama nihkeväärtust. Programm kasutab kahe erineva funktsiooni abil nii teksti krüpteerimist kui ka numbrilist krüpteerimist, et genereerida dekrüpteerimiskoodi.
+
+Funktsioon encryptText krüpteerib kasutaja sisestatud teksti nihke abil, mis on juhuslikult genereeritud vahemikus 1 kuni 25. Teksti iga tähemärgi ASCII-koodi järgi otsustab, kas see on suur- või väiketäht, ning rakendab seejärel sama nihke, et muuta see krüpteeritud tekstiks.
+
+Funktsioon encrypt krüpteerib numbri nihke nii, et see saabub kasutajale ja võimaldab tal hiljem dekrüpteerimiseks seda kasutada. See funktsioon võtab argumendiks numbri, lisab selle ette nulli, kui see on ühekohaline, seejärel vahetab numbrite kohad, teisendab need ASCII-koodideks ja ühendab need.
+
+Funktsioon decryptText dekrüpteerib krüpteeritud teksti, kasutades sama nihkeväärtust, et tagasi saada algne tekst. See funktsioon töötab sarnaselt encryptText funktsioonile, kuid rakendab nihke vastupidises järjekorras.
+
+Funktsioon decrypt dekrüpteerib numbri, mis on genereeritud funktsiooniga encrypt, et saada tagasi algne nihe. See funktsioon teeb vastupidise protsessi funktsioonile encrypt.
+
+HTML-fail sisaldab kahte nuppu - "Encrypt" ja "Decrypt" - mida saab kasutada selleks, et krüpteerida ja dekrüpteerida teksti vastavalt kasutaja sisestusele. Kui kasutaja krüpteerib teksti, genereeritakse dekrüpteerimiskood, mis kuvatakse teatisena kasutajale. Dekrüpteerimiseks sisestab kasutaja krüpteeritud teksti ja dekrüpteerimiskoodi ning seejärel kuvatakse dekrüpteeritud tekst.
