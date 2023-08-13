@@ -3,14 +3,6 @@ Setting Up the Server for Sending Emails:
 Check Node.js Installation:
 Make sure you have Node.js installed. If not, download and install it from https://nodejs.org/
 
-Create Project Directory:
-Create a new directory for your project.
-
-Install Dependencies:
-Run the following command in your project directory to install the required dependencies: Express, SendGrid, and CORS:
-
-npm install express @sendgrid/mail cors
-
 Create SendGrid Account:
 Go to https://signup.sendgrid.com/ and create a SendGrid account.
 
