@@ -1,0 +1,247 @@
+<!DOCTYPE htontainerml>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="style.css" />
+    <script
+      src="https://kit.fontawesome.com/4b19ed377c.js"
+      crossorigin="anonymous"
+    ></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/7.0.5/signalr.min.js"></script>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css?family=Nunito Sans"
+      rel="stylesheet"
+    />
+
+    <title>Price Alert System</title>
+  </head>
+
+  <body>
+    <div class="spaceholder"></div>
+    <div id="formPage">
+      <div class="card">
+        <!-- REGISTER -->
+        <div class="card-back">
+          <div class="card-heading"><strong>Create Account</strong></div>
+          <input type="email" id="registerEmail" placeholder="Email" required />
+          <input
+            type="password"
+            id="registerPassword"
+            placeholder="Password"
+            required
+          />
+          <button class="submit-button">Register</button>
+        </div>
+
+        <!-- LOGIN -->
+        <div class="card-front">
+          <div class="card-heading"><strong>Existing Account</strong></div>
+          <input type="email" id="loginEmail" placeholder="Email" required />
+          <input
+            type="password"
+            id="loginPassword"
+            placeholder="Password"
+            required
+          />
+          <button class="submit-button">Login</button>
+        </div>
+        <div id="arrow">
+          <i class="fa-solid fa-arrow-right-long fa-2x"></i>
+        </div>
+      </div>
+    </div>
+    <div class="spaceholder"></div>
+
+    <!-- NOTIFICATION BAR -->
+    <div id="notificationDiv">
+      <i class="fa-solid fa-bell fa-2x"></i>
+      <span id="notificationText"></span>
+    </div>
+
+    <!-- NAVIGATION -->
+    <div class="spaceholder2 hidden">
+      <div id="navigation">
+        <h1 id="logo">PRICEWATCH</h1>
+        <div id="clock"></div>
+        <div id="logoutDiv">
+          <i class="fa-solid fa-right-from-bracket fa-2x" id="logoutButton"></i>
+        </div>
+      </div>
+    </div>
+
+    <!-- DASHBOARD -->
+    <div id="landingPage" class="hidden">
+      <!-- TARGET PRICE ALERTS DISPLAY -->
+      <div id="targetPriceAlertsDiv" class="lightGrey">
+        <div id="alertsHeading"></div>
+        <h4 id="activeAlertsHeading">Active alerts</h4>
+        <div id="activeAlertsContainer"></div>
+        <div>
+          <i
+            class="fa-solid fa-plus fa-2x lightGrey"
+            id="addAlert"
+            onclick="addAlert()"
+          ></i>
+        </div>
+        <h4 id="inactiveAlertsHeading">Inactive alerts</h4>
+        <div id="inactiveAlertsContainer"></div>
+      </div>
+      <i
+        class="fa-solid fa-bars fa-2x lightGrey"
+        id="menu"
+        onclick="toggleMenu()"
+      ></i>
+
+      <!-- POPUP PRICE ALERT CREATOR -->
+      <div class="alertBox" id="popupPriceAlertCreator">
+        <div class="shortenedAlert">
+          <h6>Price alert</h6>
+          <i class="fa-solid fa-trash-can" id="discardAlert"></i>
+        </div>
+        <div
+          class="dropdown"
+          style="display: flex; opacity: 1; max-height: 500px"
+        >
+          <select id="typeSelect">
+            <option value="BID">BID</option>
+            <option value="ASK">ASK</option></select
+          ><select id="forexSelect">
+            <option value="EURUSD">EURUSD</option>
+            <option value="DE40">DE40</option>
+            <option value="XAUUSD">XAUUSD</option>
+            <option value="GBPUSD">GBPUSD</option>
+            <option value="USDJPY">USDJPY</option>
+            <option value="AUDUSD">AUDUSD</option></select
+          ><input type="number" step="0.0001" id="priceInput" />
+          <div>
+            <i
+              class="fa-solid fa-circle-check saveAction"
+              id="createAlert"
+              style="width: 100%; margin: 5px 0px"
+            ></i>
+          </div>
+        </div>
+      </div>
+
+      <div class="overlay"></div>
+
+      <!-- FOREX TABLE -->
+      <div id="mainContainer">
+        <quotes inline-template>
+          <div class="spreads-quotes">
+            <div class="table-responsive table-responsive-sm">
+              <table
+                id="quotes"
+                class="spreads-table table table-borderless table-striped text-12 text-sm-13 mb-2"
+              >
+                <thead>
+                  <tr class="lightGrey" id="tableHead">
+                    <th class="font-weight-normal px-sm-2"></th>
+                    <th class="font-weight-normal px-sm-2">Bid</th>
+                    <th class="font-weight-normal px-sm-2">Ask</th>
+                    <th class="font-weight-normal px-sm-2">Spread</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <th class="font-weight-normal pl-3 pl-sm-3 lightGrey">
+                      EURUSD
+                    </th>
+                    <td class="text-success" id="eurusdbid">-</td>
+                    <td class="text-success" id="eurusdask">-</td>
+                    <td class="">
+                      <span class="text-light bg-danger px-1" id="eurusdspread"
+                        >-</span
+                      >
+                    </td>
+                  </tr>
+                  <tr>
+                    <th class="font-weight-normal pl-3 pl-sm-3 lightGrey">
+                      DE40
+                    </th>
+                    <td class="text-success" id="de40bid">-</td>
+                    <td class="text-success" id="de40ask">-</td>
+                    <td class="">
+                      <span class="text-light bg-danger px-1" id="de40spread"
+                        >-</span
+                      >
+                    </td>
+                  </tr>
+                  <tr>
+                    <th class="font-weight-normal pl-3 pl-sm-3 lightGrey">
+                      XAUUSD
+                    </th>
+                    <td class="text-success" id="xauusdbid">-</td>
+                    <td class="text-success" id="xauusdask">-</td>
+                    <td class="">
+                      <span class="text-light bg-danger px-1" id="xauusdspread"
+                        >-</span
+                      >
+                    </td>
+                  </tr>
+                  <tr>
+                    <th class="font-weight-normal pl-3 pl-sm-3 lightGrey">
+                      GBPUSD
+                    </th>
+                    <td class="text-danger" id="gbpusdbid">-</td>
+                    <td class="text-danger" id="gbpusdask">-</td>
+                    <td class="">
+                      <span class="text-light bg-danger px-1" id="gbpusdspread"
+                        >-</span
+                      >
+                    </td>
+                  </tr>
+                  <tr>
+                    <th class="font-weight-normal pl-3 pl-sm-3 lightGrey">
+                      USDJPY
+                    </th>
+                    <td class="text-danger" id="usdjpybid">-</td>
+                    <td class="text-danger" id="usdjpyask">-</td>
+                    <td class="">
+                      <span class="text-light px-1" id="usdjpyspread">-</span>
+                    </td>
+                  </tr>
+                  <tr>
+                    <th class="font-weight-normal pl-3 pl-sm-3 lightGrey">
+                      AUDUSD
+                    </th>
+                    <td class="text-success" id="audusdbid">-</td>
+                    <td class="text-success" id="audusdask">-</td>
+                    <td class="">
+                      <span class="text-light px-1" id="audusdspread">-</span>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <div class="quotes-action row">
+              <div class="col-md-8 small-4 disclaimerFont">
+                *During periods of market volatility, spreads may increase, and
+                the prices provided are for reference purposes only.
+              </div>
+              <!-- <div class="col-md-4 text-right">
+                <a
+                  href="{{ link id='bf171324-5c1b-4365-9c40-7a58e2c41f64' }}"
+                  class="text-danger small-4 disclaimerFont"
+                >
+                  Browse all spreads for CFDs
+                </a>
+              </div> -->
+            </div>
+          </div>
+        </quotes>
+      </div>
+    </div>
+    <div class="spaceholder2 hidden">
+      <span id="loggedInUserEmail"></span>
+    </div>
+  </body>
+  <script src="app.js"></script>
+  <script src="API.js"></script>
+</html>

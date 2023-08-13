@@ -1,0 +1,521 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "NotoSansDisplay", "Helvetica Neue", sans-serif;
+  user-select: none;
+}
+
+/* Form page & Dashboard page */
+#formPage,
+#landingPage {
+  background-color: #ececec;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 80vh;
+  color: black;
+  width: auto;
+}
+
+/* DashBoard page */
+#landingPage {
+  color: #bebebe;
+  background-color: #121212;
+}
+
+/* Bars at the bottom and top of the page */
+.spaceholder,
+.spaceholder2 {
+  height: 10vh;
+  background-color: #bebebe;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.spaceholder2 {
+  background-color: #353535;
+  color: #bebebe;
+}
+
+/* Card and it's behaviour */
+.card {
+  width: 400px;
+  height: 300px;
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  transform-style: preserve-3d;
+  transition: transform 0.8s;
+}
+
+.card-flipped {
+  transform: rotateY(180deg);
+}
+
+/* Registration card */
+.card-front,
+.card-back {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Login card */
+.card-front {
+  transform: rotateY(0deg);
+}
+
+/* Registration card */
+.card-back {
+  transform: rotateY(180deg);
+}
+
+/* "Exisitng Account" && "Create Account" */
+.card-heading {
+  text-align: center;
+  font-size: 32px;
+  color: #3c3c3c;
+  margin-bottom: 20px;
+}
+
+/* Input fields */
+#registerPassword,
+#registerEmail,
+#loginEmail,
+#LoginPassword {
+  margin-bottom: 20px;
+  padding: 8px;
+  border: 2.5px solid #bebebe;
+  border-radius: 5px;
+  width: 80%;
+  font-size: 16px;
+}
+
+/* Login button && Register button */
+.submit-button {
+  padding: 8px 16px;
+  font-family: "NotoSansDisplay", "Helvetica Neue", sans-serif;
+  background-color: #c00;
+  color: #ffffff;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.submit-button:hover {
+  background-color: #9f0000;
+}
+
+/* Arrow for flipping the cards */
+#arrow {
+  position: absolute;
+  color: #3c3c3c;
+  bottom: 20px;
+  right: 20px;
+  width: 30px;
+  height: 30px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+#arrow:hover {
+  color: #bebebe;
+}
+
+/* DASHBOARD PAGE */
+
+/* Navigation bar */
+#navigation {
+  width: 60%;
+  display: flex;
+  align-items: center;
+}
+
+/* PRICEWATCH OR PW */
+#logo {
+  flex: 1;
+  font-size: 1.5rem;
+  font-weight: 600;
+  font-family: "Nunito Sans", "NotoSansDisplay", "Helvetica Neue", sans-serif;
+  margin: 0;
+}
+
+#clock {
+  flex: 1;
+  display: flex;
+  font-family: "Nunito Sans", "NotoSansDisplay", "Helvetica Neue", sans-serif;
+  font-weight: 700;
+  font-size: 2rem;
+  border-radius: 8px;
+  max-width: 200px;
+  height: 70px;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Hour, minute, second */
+.time-element {
+  padding: 3px 6px;
+  border-radius: 8px;
+  background-color: #252525;
+  margin: 3px;
+}
+
+/* Logout button parent container */
+#logoutDiv {
+  height: 70px;
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+/* Logout button & "+" icon */
+#logoutButton,
+#addAlert {
+  cursor: pointer;
+  transition: 0.3s;
+  padding: 10px;
+  border-radius: 8px;
+}
+
+#logoutButton:hover {
+  background-color: #252525;
+  color: #ececec;
+}
+
+/* "+" icon */
+#addAlert {
+  padding: 15px;
+  transform: scale(0.7);
+  background-color: #121212;
+}
+
+/* Dashboard page view */
+#mainContainer {
+  width: 60%;
+}
+
+.hidden {
+  display: none !important;
+}
+
+.lightGrey {
+  color: #bebebe;
+}
+
+#tableHead {
+  background-color: #252525;
+}
+
+tr {
+  background-color: #353535;
+}
+
+.clickable {
+  transition: 0.3s;
+  cursor: pointer;
+}
+
+.clickable:hover {
+  background-color: #555;
+}
+
+/* Font size for disclaimer and "Browse all spreads for CFDs"*/
+.disclaimerFont {
+  font-size: 0.8rem;
+}
+
+/* Notification bar & Price alert bar */
+#notificationDiv,
+#targetPriceAlertsDiv,
+#menu {
+  display: flex;
+  align-items: center;
+  position: fixed;
+  top: 12.4%;
+  right: -8px;
+  background-color: #bebebe;
+  padding: 15px;
+  border-radius: 5px;
+  z-index: 100;
+  transition: 0.3s;
+}
+
+#notificationDiv {
+  transform: translateX(100%);
+  transition: transform 0.3s ease-in-out;
+  z-index: 400;
+}
+
+#notificationDiv i {
+  color: #252525;
+}
+
+/* Notification text */
+#notificationText {
+  font-weight: 500;
+  margin-left: 6px;
+}
+
+#notificationDiv.show {
+  transition: transform 0.3s ease-in-out;
+  transform: translateX(0);
+}
+
+#targetPriceAlertsDiv {
+  flex-direction: column;
+  justify-content: flex-start;
+  max-height: 75vh;
+  padding: 0;
+  left: -320px;
+  width: 320px;
+  border-radius: 0px 5px 5px 5px;
+  background-color: #353535;
+  border: 2px solid #252525;
+  overflow-x: hidden;
+}
+
+#targetPriceAlertsDiv::-webkit-scrollbar {
+  width: 0;
+}
+
+/* "Alerts heading div" */
+#alertsHeading {
+  background-color: #252525;
+  min-height: 62px;
+  width: inherit;
+  border-radius: 0px 5px 0px 0px;
+}
+
+#activeAlertsContainer,
+#inactiveAlertsContainer {
+  width: 272px;
+}
+
+.alertBox {
+  padding: 12px 12px 17px;
+  border-radius: 5px;
+  margin: 10px 0px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  background-color: #121212;
+}
+
+.dropdown {
+  background-color: #121212;
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  margin: auto;
+}
+
+.alertBox .dropdown {
+  opacity: 0;
+  max-height: 0;
+  overflow: hidden;
+  transition: opacity 0.3s ease-in-out, max-height 0.3s ease-in-out;
+}
+
+.alertBox.expanded .dropdown {
+  opacity: 1;
+  max-height: 270px;
+}
+
+.shortenedAlert {
+  width: 90%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 5px 0;
+  padding: 4px;
+}
+
+.shortenedAlert h6 {
+  font-size: 18px;
+  margin: 0;
+}
+
+/* "BID" & "ASK" && "EURUSD" etc */
+select {
+  background-color: #252525;
+  color: #bebebe;
+  border: 1px solid #555;
+  height: 37px;
+  border-radius: 5px;
+  padding: 6px;
+  margin: 5px 0px !important;
+}
+
+/* Target price */
+input[type="number"] {
+  background-color: #252525;
+  color: #bebebe;
+  height: 37px;
+  border: 1px solid #555;
+  border-radius: 5px;
+  padding: 6px;
+  margin: 5px 0px !important;
+}
+
+/* "Active" & "Inactive" */
+h4 {
+  padding: 12px;
+  margin-top: 10px !important;
+  border-radius: 5px;
+  text-align: center;
+  background-color: #121212;
+}
+
+/* Customization, delete, save icon */
+.fa-gears,
+.fa-trash-can,
+.fa-circle-check {
+  font-size: 1.5rem;
+  padding: 6px;
+  border-radius: 5px;
+  background-color: #252525;
+  cursor: pointer;
+  transition: 0.3s;
+  opacity: 0.75;
+}
+
+.fa-gears:hover,
+.fa-trash-can:hover,
+.fa-circle-check:hover {
+  opacity: 1;
+}
+
+/* Delete & save icon */
+.saveAction {
+  width: 44%;
+}
+
+/* Delete icon */
+.fa-trash-can {
+  color: #c00;
+}
+
+/* Save icon */
+.fa-circle-check {
+  color: #60aa3c;
+}
+
+/* Menu button */
+#menu {
+  border-radius: 5px;
+  background-color: #353535;
+  left: -3px;
+  width: 62px;
+  cursor: pointer;
+  justify-content: center;
+}
+
+#menu:hover,
+#addAlert:hover {
+  color: #ececec;
+}
+
+/* Dark-themed popup styles */
+#popupPriceAlertCreator {
+  position: fixed;
+  text-align: center;
+  top: 50%;
+  left: 50%;
+  width: 320px;
+  transform: translate(-50%, -50%);
+  border-radius: 5px;
+  padding: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+  z-index: 400;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease-in-out;
+}
+
+#popupPriceAlertCreator .dropdown {
+  width: 90%;
+  border-radius: 5px;
+}
+
+/* Full black overlay */
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.7);
+  z-index: 300;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease-in-out;
+}
+
+#popupPriceAlertCreator.show,
+.overlay.show {
+  opacity: 1 !important;
+  pointer-events: auto !important;
+}
+
+/* Small laptop view */
+@media (max-width: 1024px) {
+  #mainContainer {
+    width: 70%;
+  }
+
+  #navigation {
+    width: 70%;
+  }
+}
+
+/* Tablet view */
+@media (max-width: 768px) {
+  #mainContainer {
+    width: 80%;
+  }
+
+  #navigation {
+    width: 80%;
+  }
+}
+
+/* Large mobile view */
+@media (max-width: 576px) {
+  #mainContainer {
+    width: 90%;
+  }
+
+  #navigation {
+    width: 90%;
+  }
+}
+
+/* Mobile view */
+@media (max-width: 425px) {
+  #clock {
+    font-size: 1.5rem;
+  }
+}
