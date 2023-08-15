@@ -1,0 +1,582 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Fake User Generation</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #222;
+        color: #fff;
+        margin: 0;
+        padding: 20px;
+        display: flex;
+        justify-content: center;
+        min-height: 100vh;
+      }
+
+      h1 {
+        text-align: center;
+      }
+
+      .container {
+        height: 450px;
+        width: 400px;
+        margin: 0 auto;
+        background-color: #333;
+        padding: 20px;
+        border-radius: 5px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+      }
+
+      .genuser-container {
+        height: fit-content;
+        width: 400px;
+        margin: 0 auto;
+        background-color: #333;
+        padding: 20px;
+        border-radius: 5px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+      }
+
+      .generated-user {
+        margin-bottom: 10px;
+        padding: 10px;
+        border: 1px solid #555;
+        border-radius: 5px;
+        cursor: pointer;
+        background-color: #444;
+      }
+
+      .username-wrapper {
+        display: flex;
+        justify-content: space-between;
+      }
+
+      .generated-user:hover {
+        background-color: #555;
+      }
+
+      .generated-username {
+        font-weight: bold;
+        display: flex;
+        align-items: center;
+      }
+
+      .generated-user label {
+        margin-bottom: 5px;
+      }
+
+      .generated-user input[type="text"] {
+        background-color: #333;
+        color: #fff;
+        cursor: pointer;
+      }
+
+      .dropdown {
+        display: none;
+        margin-top: 10px;
+        padding: 10px;
+        background-color: #555;
+        border: 1px solid #777;
+        border-radius: 5px;
+      }
+
+      .generated-user.active .dropdown {
+        display: block;
+      }
+
+      label {
+        display: flex;
+        justify-content: flex-start;
+        margin-bottom: 5px;
+        font-weight: bold;
+        text-align: left;
+        color: #fff;
+      }
+
+      input {
+        width: 95%;
+        padding: 10px;
+        border-radius: 5px;
+        border: 1px solid #777;
+        margin-bottom: 10px;
+        background-color: #333;
+        color: #fff;
+        cursor: pointer;
+      }
+
+      input.copied,
+      .dropdown span.copied {
+        background-color: rgba(0, 255, 0, 0.2);
+      }
+
+      button {
+        margin-top: 10px;
+        padding: 10px 20px;
+        background-color: #4caf50;
+        color: #fff;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-weight: bold;
+      }
+
+      button:hover {
+        background-color: #45a049;
+      }
+
+      .delete-user {
+        width: 20px;
+        height: 20px;
+        background-color: red;
+        border-radius: 50%;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-weight: bold;
+        border: 2px solid red;
+        box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+      }
+
+      .delete-user::before,
+      .delete-user::after {
+        content: "";
+        position: absolute;
+        width: 12px;
+        height: 2px;
+        background-color: #fff;
+      }
+
+      .delete-user::before {
+        transform: rotate(45deg);
+      }
+
+      .delete-user::after {
+        transform: rotate(-45deg);
+      }
+
+      .dropdown p {
+        display: flex;
+        align-items: center;
+        padding: 10px;
+        border-radius: 5px;
+        cursor: pointer;
+        white-space: nowrap;
+      }
+
+      .dropdown span {
+        width: 100%;
+        padding: 10px;
+        margin-left: 5px;
+        border-radius: 5px;
+        border: 1px solid #777;
+        background-color: #333;
+        box-sizing: border-box;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>Information</h1>
+      <label for="firstName">First Name:</label>
+      <input
+        type="text"
+        id="firstName"
+        readonly
+        onclick="copyToClipboard('firstName')"
+      />
+
+      <label for="lastName">Last Name:</label>
+      <input
+        type="text"
+        id="lastName"
+        readonly
+        onclick="copyToClipboard('lastName')"
+      />
+
+      <label for="username">Username:</label>
+      <input
+        type="text"
+        id="username"
+        readonly
+        onclick="copyToClipboard('username')"
+      />
+
+      <label for="password">Password:</label>
+      <input
+        type="text"
+        id="password"
+        readonly
+        onclick="copyToClipboard('password')"
+      />
+
+      <button onclick="generateAndStoreValues()">Generate</button>
+    </div>
+    <div class="genuser-container">
+      <h2>Generated Users</h2>
+      <div id="generatedUsers"></div>
+    </div>
+
+    <script>
+      displayGeneratedUsers();
+
+      function generateRandomString(
+        length,
+        allowSymbols = false,
+        allowNumbers = false
+      ) {
+        let characters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        if (allowSymbols) {
+          characters += "!@#$%^&*()";
+        }
+        if (allowNumbers) {
+          characters += "0123456789";
+        }
+        let result = "";
+        for (let i = 0; i < length; i++) {
+          const randomIndex = Math.floor(Math.random() * characters.length);
+          result += characters.charAt(randomIndex);
+        }
+        return result;
+      }
+
+      const firstNames = [
+        "Emma",
+        "Liam",
+        "Olivia",
+        "Noah",
+        "Ava",
+        "Isabella",
+        "Sophia",
+        "Mia",
+        "Charlotte",
+        "Amelia",
+        "Harper",
+        "Evelyn",
+        "Abigail",
+        "Emily",
+        "Elizabeth",
+        "Mila",
+        "Ella",
+        "Avery",
+        "Sofia",
+        "Camila",
+        "Aria",
+        "Scarlett",
+        "Victoria",
+        "Madison",
+        "Luna",
+        "Grace",
+        "Chloe",
+        "Penelope",
+        "Layla",
+        "Riley",
+        "Zoey",
+        "Nora",
+        "Lily",
+        "Eleanor",
+        "Hannah",
+        "Lillian",
+        "Addison",
+        "Aubrey",
+        "Ellie",
+        "Stella",
+        "Natalie",
+        "Zoe",
+        "Leah",
+        "Hazel",
+        "Violet",
+        "Aurora",
+        "Savannah",
+        "Audrey",
+        "Brooklyn",
+        "Bella",
+        "Claire",
+        "Skylar",
+        "Lucy",
+        "Paisley",
+        "Everly",
+        "Anna",
+        "Caroline",
+        "Nova",
+        "Genesis",
+        "Emilia",
+        "Kennedy",
+        "Samantha",
+        "Maya",
+        "Willow",
+        "Kinsley",
+        "Naomi",
+        "Aaliyah",
+        "Elena",
+        "Sarah",
+        "Ariana",
+        "Allison",
+        "Gabriella",
+        "Alice",
+        "Madelyn",
+        "Cora",
+        "Ruby",
+        "Eva",
+        "Serenity",
+        "Autumn",
+        "Adeline",
+        "Hailey",
+        "Gianna",
+        "Valentina",
+        "Isla",
+        "Eliana",
+        "Quinn",
+        "Nevaeh",
+        "Ivy",
+        "Sadie",
+        "Piper",
+        "Lydia",
+        "Alexa",
+        "Josephine",
+        "Emery",
+        "Julia",
+        "Delilah",
+      ];
+
+      const lastNames = [
+        "Smith",
+        "Johnson",
+        "Williams",
+        "Jones",
+        "Brown",
+        "Davis",
+        "Miller",
+        "Wilson",
+        "Moore",
+        "Taylor",
+        "Anderson",
+        "Thomas",
+        "Jackson",
+        "White",
+        "Harris",
+        "Martin",
+        "Thompson",
+        "Garcia",
+        "Martinez",
+        "Robinson",
+        "Clark",
+        "Rodriguez",
+        "Lewis",
+        "Lee",
+        "Walker",
+        "Hall",
+        "Allen",
+        "Young",
+        "Hernandez",
+        "King",
+        "Wright",
+        "Lopez",
+        "Hill",
+        "Scott",
+        "Green",
+        "Adams",
+        "Baker",
+        "Gonzalez",
+        "Nelson",
+        "Carter",
+        "Mitchell",
+        "Perez",
+        "Roberts",
+        "Turner",
+        "Phillips",
+        "Campbell",
+        "Parker",
+        "Evans",
+        "Edwards",
+        "Collins",
+        "Stewart",
+        "Sanchez",
+        "Morris",
+        "Rogers",
+        "Reed",
+        "Cook",
+        "Morgan",
+        "Bell",
+        "Murphy",
+        "Bailey",
+        "Rivera",
+        "Cooper",
+        "Richardson",
+        "Cox",
+        "Howard",
+        "Ward",
+        "Torres",
+        "Peterson",
+        "Gray",
+        "Ramirez",
+        "James",
+        "Watson",
+        "Brooks",
+        "Kelly",
+        "Sanders",
+        "Price",
+        "Bennett",
+        "Wood",
+        "Barnes",
+        "Ross",
+        "Henderson",
+        "Coleman",
+        "Jenkins",
+        "Perry",
+        "Powell",
+        "Long",
+        "Patterson",
+        "Hughes",
+        "Flores",
+        "Washington",
+        "Butler",
+        "Simmons",
+        "Foster",
+        "Gonzales",
+        "Bryant",
+        "Alexander",
+        "Russell",
+        "Griffin",
+        "Diaz",
+        "Hayes",
+      ];
+      function generateUniqueValues() {
+        const firstNameIndex = Math.floor(Math.random() * firstNames.length);
+        const lastNameIndex = Math.floor(Math.random() * lastNames.length);
+        const firstName = firstNames[firstNameIndex];
+        const lastName = lastNames[lastNameIndex];
+        const username =
+          firstName + lastName + Math.floor(Math.random() * 10000);
+        const password = generateRandomString(8, true, true);
+
+        return {
+          firstName,
+          lastName,
+          username,
+          password,
+        };
+      }
+
+      function copyDropdownText(dropdown) {
+        const spanElement = dropdown.querySelector("span");
+        const text = spanElement.textContent;
+        navigator.clipboard.writeText(text);
+
+        spanElement.classList.add("copied");
+        setTimeout(function () {
+          spanElement.classList.remove("copied");
+        }, 1000);
+      }
+
+      function copyToClipboard(inputId) {
+        const inputElement = document.getElementById(inputId);
+        inputElement.select();
+        inputElement.setSelectionRange(0, 99999);
+        document.execCommand("copy");
+        inputElement.classList.add("copied");
+        setTimeout(function () {
+          inputElement.classList.remove("copied");
+        }, 1000);
+      }
+
+      function generateAndStoreValues() {
+        const uniqueValues = generateUniqueValues();
+
+        let generatedUsers = localStorage.getItem("generatedUsers");
+        generatedUsers = generatedUsers ? JSON.parse(generatedUsers) : [];
+        generatedUsers.push(uniqueValues);
+        localStorage.setItem("generatedUsers", JSON.stringify(generatedUsers));
+
+        displayGeneratedUsers();
+      }
+
+      function deleteGeneratedUser(index) {
+        let generatedUsers = JSON.parse(localStorage.getItem("generatedUsers"));
+        generatedUsers.splice(index, 1);
+        localStorage.setItem("generatedUsers", JSON.stringify(generatedUsers));
+
+        displayGeneratedUsers();
+      }
+
+      function displayGeneratedUsers() {
+        const generatedUsers = JSON.parse(
+          localStorage.getItem("generatedUsers")
+        );
+        const generatedUsersContainer =
+          document.getElementById("generatedUsers");
+        generatedUsersContainer.innerHTML = "";
+
+        if (generatedUsers && generatedUsers.length > 0) {
+          for (let i = 0; i < generatedUsers.length; i++) {
+            const user = generatedUsers[i];
+            const username = user.username;
+
+            const userDiv = document.createElement("div");
+            userDiv.classList.add("generated-user");
+
+            const usernameWrapper = document.createElement("div");
+            usernameWrapper.classList.add("username-wrapper");
+
+            const usernameElement = document.createElement("div");
+            usernameElement.classList.add("generated-username");
+            usernameElement.textContent = username;
+
+            const deleteButton = document.createElement("div");
+            deleteButton.classList.add("delete-user");
+            deleteButton.addEventListener("click", function () {
+              deleteGeneratedUser(i);
+            });
+
+            usernameWrapper.appendChild(usernameElement);
+            usernameWrapper.appendChild(deleteButton);
+
+            const dropdownElement = document.createElement("div");
+            dropdownElement.classList.add("dropdown");
+            dropdownElement.innerHTML = `
+        <p><strong>First Name:</strong> <span>${user.firstName}</span></p>
+        <p><strong>Last Name:</strong> <span>${user.lastName}</span></p>
+        <p><strong>Username:</strong> <span>${username}</span></p>
+        <p><strong>Password:</strong> <span>${user.password}</span></p>
+      `;
+
+            userDiv.appendChild(usernameWrapper);
+            userDiv.appendChild(dropdownElement);
+
+            userDiv.addEventListener("click", function (event) {
+              const dropdownElement = userDiv.querySelector(".dropdown");
+
+              const isDropdownClicked = dropdownElement.contains(event.target);
+
+              if (!isDropdownClicked) {
+                userDiv.classList.toggle("active");
+              }
+            });
+
+            generatedUsersContainer.appendChild(userDiv);
+
+            document.getElementById("firstName").value = user.firstName;
+            document.getElementById("lastName").value = user.lastName;
+            document.getElementById("username").value = username;
+            document.getElementById("password").value = user.password;
+
+            const dropdownElements = dropdownElement.querySelectorAll("p");
+            dropdownElements.forEach(function (dropdown) {
+              dropdown.addEventListener("click", function () {
+                copyDropdownText(dropdown);
+              });
+            });
+          }
+        }
+      }
+    </script>
+  </body>
+</html>
