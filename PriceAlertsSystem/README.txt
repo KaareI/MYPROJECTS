@@ -1,6 +1,3 @@
-Live app:
-
-http://80.69.175.137:5500/index.html
 
 Set Up local server for sending emails:
 
